@@ -12,15 +12,21 @@ typedef struct node *BSTree;
 
 // returns the number of odd values in a binary search tree
 int bstCountOdds(struct node *t) {
-	// TODO
-	return 0;
+	if (t == NULL) return 0;
+
+	if (t->elem % 2 == 1) {
+		return bstCountOdds(t->left) + bstCountOdds(t->right) + 1;
+	} else {
+		return bstCountOdds(t->left) + bstCountOdds(t->right);
+	}
 }
 
 // count number of internal nodes in a given tree
 // an internal node is a node with at least one child node
 int bstCountInternal(struct node *t) {
-	// TODO
-	return 0;
+	if (t == NULL) return 0;
+	if (t->left == NULL && t->right == NULL) return 0;
+	return 1 + bstCountInternal(t->left) + bstCountInternal(t->right);
 }
 
 // returns the level of the node containing a given key if such a node exists,
@@ -28,8 +34,18 @@ int bstCountInternal(struct node *t) {
 // (when a given key is not in the binary search tree)
 // The level of the root node is zero.
 int bstNodeLevel(struct node *t, int key) {
-	// TODO
-	return -1;
+	if (t == NULL) return -1;
+	if (t->elem == key) return 0;
+
+	if (key < t->elem) {
+		int a = bstNodeLevel(t->left, key);
+		if (a == -1) return -1;
+		return a + 1;
+	} else {
+		int a = bstNodeLevel(t->right, key);
+		if (a == -1) return -1;
+		return a + 1;
+	}
 }
 
 // counts the number of values that are greater than a given value.
@@ -54,6 +70,7 @@ int isHeightBalanced(struct node *t) {
 }
 
 // challenging question!
+// hint: use a recursive helper function
 // return the kth largest node in the binary search tree
 int kthSmallest(struct node *t, int k) {
 	// TODO
